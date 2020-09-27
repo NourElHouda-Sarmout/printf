@@ -1,31 +1,26 @@
-#ifndef VARIADIC_FUNCTIONS_H
-#define VARIADIC_FUNCTIONS_H
+#ifndef HOLBERTON_H
+#define HOLBERTON_H
 #include <stdarg.h>
-#include <unistd.h>
+#include <stdlib.h>
+
 /**
- * struct op - struct of type and associated function.
- *@op: type including int, float, char, and string.
- *@f: associated function.
+ *struct print - contains a printf flag and related function
+ *@type: the flag
+ *@func: the function
  */
-typedef struct op
+
+typedef struct print
 {
-	char *op;
-	int (*f)(va_list a);
-} op_t;
+	char type;
+	int (*func)(va_list);
+} print_table;
 
-/*op_functions*/
-int print_ch(va_list a);
-int print_st(va_list a);
-int print_in(va_list a);
-int print_di(va_list a);
-
-/*digit_conversion*/
-int count_digit(int n);
-int _itoa(int n);
-
-/*utility*/
-int _printf(const char *format, ...);
 int _putchar(char c);
-int _strlen(char *S);
+int _printf(const char *format, ...);
+int print_c(va_list args);
+int print_s(va_list args);
+int print_perc(va_list args);
+int print_d(va_list args);
+int print_i(va_list args);
 
 #endif

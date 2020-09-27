@@ -1,68 +1,89 @@
-#include <stdarg.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <unistd.h>
 #include "holberton.h"
+#include <stdio.h>
+
 /**
- * _printf - produces output according to a specified format.
- * @format: format specified by user.
- * Return: number of characters printed.
+ *print_helper - prints input as printf would do
+ * @format: a character string containing directives
+ * @ptbl: table of functions
+ * @args: list of arguments
+ * Return: The number of characters printed
  */
+
+int print_helper(const char *format, print_table ptbl[], va_list args)
+{
+	int i = 0, j, count = 0, done = 0, ret;
+
+	if (!format || (format[0] == '%' && format[1] == '\0'))
+		return (-1);
+	while (format[i])
+	{
+		for (; format[i] != '%'; i++, count++)
+		{
+			if (!format[i])
+			{
+				done = 1;
+				break;
+			}
+			_putchar(format[i]);
+		}
+		if (done)
+			break;
+		i++;
+		for (j = 0; ptbl[j].type; j++)
+			if (format[i] == ptbl[j].type)
+			{
+				ret = ptbl[j].func(args);
+				if (ret == -1)
+				{
+					return (-1);
+				}
+				count += ret;
+				break;
+			}
+		if (ptbl[j].type == 0)
+		{
+			if (!format[i])
+				break;
+			_putchar('%');
+			_putchar(format[i]);
+			count += 2;
+		}
+		i++;
+	}
+	return (count);
+}
+
+/**
+ *_printf - prints input as printf would do
+ * @format: a character string containing directives
+ * Return: The number of characters printed
+ */
+
 int _printf(const char *format, ...)
 {
+	int count = 0;
 	va_list args;
-	op_t arg_format[] = {
-		{"c", print_ch},
-		{"s", print_st},
-		{"i", print_in},
-		{"d", print_di},
-		{NULL, NULL}
+	print_table ptbl[] = {
+		{'c', print_c},
+		{'s', print_s},
+		{'%', print_perc},
+		{'d', print_d},
+		{'i', print_i},
+		{'b', print_b},
+		{'u', print_u},
+		{'o', print_o},
+		{'x', print_x},
+		{'X', print_X},
+		{'S', print_S},
+		{'r', print_r},
+		{'p', print_p},
+		{'R', print_R},
+		{0, NULL}
 	};
-	int temp; int i = 0; int j = 0; int char_count = 0;
-
 	va_start(args, format);
-	if (format == NULL)
-		return (-1);
-	while (format[j] != '\0')
-	{
-		if (format[j] == '%' && format[j + 1] == '%')
-		{_putchar(format[j]);
-			j++;
-			char_count++;
-		}
-		else if (format[j] == '%')
-		{
-			j++;
-			while (format[j] == ' ')
-			{
-				j++;
-			}
-			if (format[j] == '%')
-			{
-				_putchar(format[j]);
-				char_count++;
-				_putchar(' ');
-				j++;
-				char_count++;
-			}
-			while (arg_format[i].op != NULL)
-			{
-				if (format[j] == *arg_format[i].op)
-				{
-					temp = arg_format[i].f(args);
-					char_count += temp;
-				}
-				i++;
-			}
-			i = 0;
-		}
-		else
-		{
-			_putchar(format[j]);
-			char_count++;
-		}
-		j++;
-	}
+
+	count = print_helper(format, ptbl, args);
+	_putchar(-1);
 	va_end(args);
-	return (char_count);
+	return (count);
 }
