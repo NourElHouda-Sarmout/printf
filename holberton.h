@@ -22,5 +22,16 @@ int print_s(va_list args);
 int print_perc(va_list args);
 int print_d(va_list args);
 int print_i(va_list args);
+int print_b(va_list args);
+int print_u(va_list args);
+int print_o(va_list args);
+int print_x(va_list args);
+int print_X(va_list args);
+int print_S(va_list args);
+char *print_conv(unsigned long int num, int base, int cap);
+int print_r(va_list args);
+int print_p(va_list args);
+int print_R(va_list args);
+
 
 #endif
