@@ -1,69 +1,20 @@
-.TH _PRINTF 1
+.TH "man" 2 "22 Oct 2018" 0.32 "_printf() man page"
 .SH NAME
-_printf - print to the standard output
+_printf -- formatted output
 .SH SYNOPSIS
-int _printf(const char * format, ...)
+_printf format [arguments, ...]
 .SH DESCRIPTION
-The function printf produces output according to the format as described below.
-Th function prints to stdout, the standard output stream.
-.RS -11
-
-.B Return Value
-.RE
-Upon successful return, the function returns the number of characters printed
-(excluding the null byte). If an output error is encountered, the value -1
-is returned.
-
-.RS -11
-.B Format Of The Format String
-.RE
-The format string is a character string, composed of zero or more directives:
-ordinary char characters, which are copied unchanged to the output stream;
-and conversion specifications, each of with results in fetching zero
-or more arguments. Each conversion specification begins with the character %,
-and ends with a conversion specifier.
-
-The arguments must match the type of the conversion specifier. The arguments are 
-used in the order of the conversion specifiers.
-
-.RS -11
-.B The Conversion Specifiers (%)
-.RE
-
-.B d, i
-    The int arguments is converted to a signed decimal notation.
-
-.B o, u, x, X
-    The unsigned int argument is converted to unsigned octal (o), unsigned
-    decimal (u), or unsigned hexadecimal (x and X). Lowercase letters are used
-    for the x conversion, and uppercase for X.
-
-.B c
-   The int argument is converted to an unsigned char, and the matching character
-   is written.
-
-.B s
-   The const char * argument is expected to be a pointer to an array of
-   character type. Characters from the array are written up to (not including)
-   the terminating null byte.
-
-.B p
-   The void * pointer argument is printed in hexadecimal. %p is
-   used to print pointer addresses.
-
-.B b
-   The unsigned int argument is converted to binary.
-
-.B r
-   The const char * argument is expected to be a pointer to an array of
-   character type. The array of characters prints in reverse.
-
-.B R
-   The const char * argument is expected to be a pointer to an array of
-   character type. The array of characters is encrypted with the rot13
-   encryption.
-
-.B S
-   The const char * argument is expected to be a pointer to an array of
-   character type. Non printable characters (ASCII value of <32 or >=127) are
-   written as '\x', followed by the ASCII code value in hexadecimal uppercase.
+Our custom _printf utility formats and prints its arguments using the format string.
+The format string is a character string which contains specifiers and flags
+_printf parses the format string and replaces specifiers with variadic arguments.
+.SH RETURN VALUE
+The _printf utility returns the number of bytes written on success, and -1 on failure.
+.SH SEE ALSO
+.I 
+builtin(1), echo(1), sh(1), printf(3)
+.SH BUGS
+No known bugs, does not implement all qualities of stdio printf, however.
+.SH IMPROVEMENTS
+Implement width, percision, length specifiers for integers, and the other flags '-' & '0'
+.SH AUTHOR
+Bennett Dixon & Teng Yu
